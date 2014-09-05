@@ -1,9 +1,7 @@
 <?php
 
-use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Debug\Debug;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Vox\Treinamento\Exercicio1\Exercicio1Extension;
 
 require 'vendor/autoload.php';
@@ -16,9 +14,23 @@ $container->registerExtension($extension);
 $container->loadFromExtension($extension->getAlias());
 //$loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/Resources/config'));
 //$loader->load('services.yml');
-
+//Compila sabagaça
 $container->compile();
 
-$tm = $container->get('teste_manager');
+$cafe = $container->get('cafe');
+$chantily = $container->get('chantily');
+$pedido = $container->get('pedido');
+$expresso = $container->get('expresso');
+$duplo = $container->get('duplo');
 
-var_dump($tm);
+$cafe->addAdicional($chantily);
+$cafe->addAdicional($expresso);
+$cafe->addAdicional($duplo);
+
+$pedido->addCafe($cafe);
+//$pedido->build();
+
+
+$factoryPrinter = $container->get('factory_cupom_fiscal');
+$renderer = $factoryPrinter->getCupomFiscal('json');
+$renderer->render($pedido);
